@@ -1,6 +1,17 @@
 {
   "name": "sacco-backend",
   "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/jonmersha/amarach_server#readme",
+  "bugs": {
+    "url": "https://github.com/jonmersha/amarach_server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonmersha/amarach_server.git"
+  },
+  "license": "ISC",
+  "author": "Yohannes Mitike",
   "type": "module",
   "main": "index.js",
   "scripts": {
