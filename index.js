@@ -1,7 +1,5 @@
 import express from "express";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
+
 import publicRouter from "./routes/public.js";
 import adminRouter from "./routes/admin.js";
 import dbRouter from "./routes/db.js";
@@ -13,21 +11,10 @@ import cors from 'cors';
 
 dotenv.config();
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 
 async function startServer() {
-  // Initialize Database
-  try {
-    const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
-    const queries = schema.split(';\n').filter(q => q.trim().length > 0);
-    await pool.execute("SET sql_mode = 'ANSI_QUOTES'");
-    for (const q of queries) {
-      await pool.execute(q);
-    }
-    console.log('Database initialized');
-  } catch (err) {
-    console.error('Database initialization failed:', err);
-  }
+
 
   const app = express();
   const PORT = process.env.PORT || 3000;
@@ -45,7 +32,7 @@ async function startServer() {
     res.json({ status: "ok", provider: "MySQL + Node.js Backend" });
   });
 
-  app.listen(PORT, "localhost", () => {
+  app.listen("localhost", () => {
     console.log(`Backend server running at http://localhost:${PORT}/`);
   });
 }
