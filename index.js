@@ -9,6 +9,8 @@ import dotenv from 'dotenv';
 import pool from "./db.js";
 
 
+import cors from 'cors';
+
 dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -30,6 +32,8 @@ async function startServer() {
   const app = express();
   const PORT = process.env.PORT || 3000;
 
+  // Allow cross-origin requests
+  app.use(cors());
   app.use(express.json({ limit: '10mb' }));
 
   // API routes
