@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `updated_at` BIGINT,
   PRIMARY KEY (`collection_name`, `doc_id`)
 );
-);
 
 -- Data for table: users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -21,7 +20,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `createdAt` TIMESTAMP,
   `uid` TEXT,
   `lastLogin` TIMESTAMP
-);
 );
 
 INSERT IGNORE INTO `users` (`id`, `role`, `email`, `displayName`, `isMember`, `totalVisits`, `membershipStatus`, `photoURL`, `kycStatus`, `createdAt`, `uid`, `lastLogin`) VALUES ('1QXYmjPNLaYdq6k5LmcNu4FEAOu2', 'member', 'konenahu@gmail.com', 'KONE NAHUSENAY', FALSE, 2, 'none', 'https://lh3.googleusercontent.com/a/ACg8ocLxc2Wd9ziflPjy2q2J_hTrvxWcJXeYjanEJ_3SIq3fTUOBTg=s96-c', 'pending', '2026-04-22T08:16:23.533Z', '1QXYmjPNLaYdq6k5LmcNu4FEAOu2', '2026-04-23T16:51:04.148Z');
