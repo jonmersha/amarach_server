@@ -3,6 +3,32 @@ import pool from '../db.js';
 
 const router = Router();
 
+const PUBLIC_READ_COLLECTIONS = ['ads', 'blogs', 'partners', 'config', 'news', 'news_updates', 'jobs', 'blog_comments', 'blog_presence', 'products'];
+const PUBLIC_WRITE_COLLECTIONS = ['marketplace_requests', 'supplier_registrations', 'contact_messages', 'blog_comments'];
+
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const { path } = req.body;
+  const isRead = req.path === '/query' || req.path === '/get';
+  
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    req.user = { uid: authHeader.split(' ')[1] };
+    return next();
+  }
+
+  if (isRead && PUBLIC_READ_COLLECTIONS.includes(path)) {
+    return next();
+  }
+
+  if (req.path === '/add' && PUBLIC_WRITE_COLLECTIONS.includes(path)) {
+    return next();
+  }
+
+  return res.status(401).json({ error: 'Unauthorized. You must be logged in to access this data.' });
+};
+
+router.use(authMiddleware);
+
 router.post('/query', async (req, res) => {
   const { path } = req.body;
   try {
