@@ -72,29 +72,29 @@ app.get("/api/health", (req, res) => {
 // Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Unhandled Error:', err);
-  
+
   // Don't expose stack traces in production
   const errorResponse = {
     error: 'Internal Server Error',
     message: process.env.NODE_ENV === 'production' ? 'An unexpected error occurred' : err.message
   };
-  
+
   if (process.env.NODE_ENV !== 'production' && err.stack) {
     errorResponse.stack = err.stack;
   }
-  
+
   res.status(err.status || 500).json(errorResponse);
 });
 
 // Start Server
-const server = app.listen(PORT, "0.0.0.0", () => {
+const server = app.listen(() => {
   console.log(`Backend server running in ${process.env.NODE_ENV || 'development'} mode at http://0.0.0.0:${PORT}/`);
 });
 
 // Graceful Shutdown handling
 const gracefulShutdown = async () => {
   console.log('\nReceived shutdown signal, initiating graceful shutdown...');
-  
+
   server.close(async () => {
     console.log('HTTP server closed.');
     try {
