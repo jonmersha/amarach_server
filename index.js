@@ -25,10 +25,10 @@ app.use(helmet({
 }));
 
 // Rate Limiting (Global)
-// In production, you might want to increase this or configure it behind a reverse proxy (trust proxy)
+app.set('trust proxy', 1); // Trust first proxy (e.g. Nginx, Cloudflare)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // limit each IP to 300 requests per windowMs
+  max: 5000, // limit each IP to 5000 requests per windowMs
   message: { error: 'Too many requests from this IP, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
