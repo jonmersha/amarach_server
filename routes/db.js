@@ -37,7 +37,18 @@ router.post('/query', async (req, res) => {
     
     const [rows] = await pool.execute(query, params);
     
-    res.json({ docs: rows.map(r => ({ id: r.id, data: JSON.parse(r.data) })) });
+    const parsedDocs = [];
+    for (const r of rows) {
+      try {
+        parsedDocs.push({ id: r.id, data: JSON.parse(r.data) });
+      } catch (parseErr) {
+        console.error(`Invalid JSON in doc ${r.id} of collection ${path}:`, parseErr);
+        // Fallback to raw string or empty object if corrupted
+        parsedDocs.push({ id: r.id, data: {} }); 
+      }
+    }
+    
+    res.json({ docs: parsedDocs });
   } catch (err) {
     console.error('Database query error:', err);
     res.status(500).json({ error: 'Database query failed' });
@@ -52,7 +63,13 @@ router.post('/get', async (req, res) => {
       [path, id]
     );
     if (rows.length === 0) return res.json({ exists: false });
-    res.json({ exists: true, data: JSON.parse(rows[0].data) });
+    let parsedData = {};
+    try {
+      parsedData = JSON.parse(rows[0].data);
+    } catch (parseErr) {
+      console.error(`Invalid JSON in doc ${id} of collection ${path}:`, parseErr);
+    }
+    res.json({ exists: true, data: parsedData });
   } catch (err) {
     console.error('Database get error:', err);
     res.status(500).json({ error: 'Database fetch failed' });
