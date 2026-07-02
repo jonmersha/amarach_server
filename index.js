@@ -87,8 +87,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-const server = app.listen(() => {
-  console.log(`Backend server running in ${process.env.NODE_ENV || 'development'} mode at http://0.0.0.0:${PORT}/`);
+const server = app.listen(PORT, () => {
+  console.log(`Backend server running in ${process.env.NODE_ENV || 'development'} mode`);
 });
 
 // Graceful Shutdown handling
